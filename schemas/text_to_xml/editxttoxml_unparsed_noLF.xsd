@@ -1,0 +1,49 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:ts="http://schemas.capeclear.com/2003/02/TextSchema" ts:align="center"
+    ts:rootElement="fhc:edi_file"
+    ts:eofStrip="&amp;#10;"
+    ts:preferredPadding=" "
+    ts:decimalSeparator="."
+    ts:numberFormat="#.00"
+    ts:truncate="false"
+    ts:quoted="optional"
+    ts:padding=" +"
+    targetNamespace="https://github.com/firehawk-consulting/firehawk/schemas/text_to_xml/editxttoxml_unparsed.xsd"
+    xmlns:fhc="https://github.com/firehawk-consulting/firehawk/schemas/text_to_xml/editxttoxml_unparsed.xsd"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1">
+	<xsd:annotation>
+        <xsd:appinfo>EDI Text to XML Schema for Workday</xsd:appinfo>
+        <xsd:documentation xml:lang="en">
+            Copyright 2018 Matthew Davis Firehawk Consulting, LLC
+        </xsd:documentation>
+        <xsd:documentation xml:lang="en">
+            This program is free software: you can redistribute it and/or modify
+            it under the terms of the GNU General Public License as published by
+            the Free Software Foundation, either version 3 of the License, or
+            (at your option) any later version.
+            
+            This program is distributed in the hope that it will be useful,
+            but WITHOUT ANY WARRANTY; without even the implied warranty of
+            MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+            GNU General Public License for more details.
+            
+            You should have received a copy of the GNU General Public License
+            along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;
+        </xsd:documentation>
+    </xsd:annotation>
+    <xsd:element name="edi_file">
+       <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element minOccurs="0" maxOccurs="unbounded" ref="fhc:edi_record"/>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    <xsd:element name="edi_record" 
+   		ts:occurrenceSeparator="~"
+   		ts:align="left"
+        ts:format="[^\~]+"
+        type="xsd:string"
+        ts:truncate="false" 
+        ts:caseSensitive="false"
+        ts:quoted="optional"/>
+</xsd:schema>
