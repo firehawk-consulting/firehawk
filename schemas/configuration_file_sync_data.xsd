@@ -1,111 +1,125 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
-  targetNamespace="https://github.com/firehawk-consulting/firehawk/schemas/configuration_file_data.xsd"
-  xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-  xmlns:fhc="https://github.com/firehawk-consulting/firehawk/schemas/configuration_file_data.xsd"
-  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1">
+<xs:schema elementFormDefault="qualified" 
+    targetNamespace="https://github.com/firehawk-consulting/firehawk/schemas/configuration_file_sync_data.xsd"
+    vc:minVersion="1.1"
+    xmlns:fhc="https://github.com/firehawk-consulting/firehawk/schemas/configuration_file_sync_data.xsd"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-  <xs:element name="processes">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="fhc:process"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="process">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="fhc:web_service_information"/>
-      </xs:sequence>
-      <xs:attribute ref="fhc:process_name" use="required"/>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="web_service_information">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="fhc:get_ws_attributes" minOccurs="0" maxOccurs="1"/>
-        <xs:element ref="fhc:put_ws_attributes" minOccurs="0" maxOccurs="1"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="get_ws_attributes">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="fhc:application"/>
-        <xs:element ref="fhc:request_filename"/>
-        <xs:element ref="fhc:request_type"/>
-        <xs:choice>
-          <xs:element ref="fhc:filter_attributes"/>
-          <xs:element ref="fhc:update_attributes"/>
-        </xs:choice>
-        <xs:element ref="fhc:request_endpoint"/>
-        <xs:element ref="fhc:response_endpoint"/>
-        <xs:element ref="fhc:split_namespace"/>
-        <xs:element ref="fhc:split_tag"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="request_type" type="xs:NCName"/>
-  <xs:element name="filter_attributes">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="fhc:multi_instance_filters"/>
-        <xs:element ref="fhc:single_instance_filters"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="multi_instance_filters">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="fhc:filter_attribute" minOccurs="1" maxOccurs="unbounded"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="single_instance_filters">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="fhc:filter_attribute" minOccurs="1" maxOccurs="unbounded"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="update_attributes">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="fhc:multi_instance_updates"/>
-        <xs:element ref="fhc:single_instance_updates"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="multi_instance_updates">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="fhc:update_attribute" minOccurs="1" maxOccurs="unbounded"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="single_instance_updates">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="fhc:update_attribute" minOccurs="1" maxOccurs="unbounded"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="response_endpoint" type="xs:string"/>
-  <xs:element name="split_namespace" type="xs:string"/>
-  <xs:element name="split_tag" type="xs:NMTOKEN"/>
-  <xs:element name="put_ws_attributes">
-    <xs:complexType>
-      <xs:sequence>
-        <xs:element ref="fhc:application"/>
-        <xs:element ref="fhc:request_filename"/>
-        <xs:element ref="fhc:request_endpoint"/>
-      </xs:sequence>
-    </xs:complexType>
-  </xs:element>
-  <xs:element name="application" type="xs:NCName"/>
-  <xs:element name="request_filename" type="xs:string"/>
-  <xs:element name="update_attribute" type="xs:string"/>
-  <xs:element name="filter_attribute" type="xs:string"/>
-  <xs:element name="request_endpoint" type="xs:string"/>
+    <xs:element name="processes">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="fhc:process"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="process">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fhc:web_service_information"/>
+            </xs:sequence>
+            <xs:attribute ref="fhc:process_name" use="required"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="web_service_information">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="1" minOccurs="0" ref="fhc:get_ws_attributes"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="fhc:put_ws_attributes"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="get_ws_attributes" type="fhc:ws_attributes"/>
+    <xs:element name="put_ws_attributes" type="fhc:ws_attributes"/>
+    <xs:element name="request_type" type="xs:NCName"/>
+    <xs:element name="filter_attributes">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fhc:multi_instance_filters"/>
+                <xs:element ref="fhc:single_instance_filters"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="multi_instance_filters">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" ref="fhc:filter_attribute"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="single_instance_filters">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" ref="fhc:filter_attribute"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="update_attributes">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="fhc:update_data_attribute"/>
+                <xs:element ref="fhc:multi_instance_updates"/>
+                <xs:element ref="fhc:single_instance_updates"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="multi_instance_updates">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" ref="fhc:update_attribute"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="single_instance_updates">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="1" ref="fhc:update_attribute"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="response_endpoint">
+        <xs:complexType>
+            <xs:simpleContent>
+                <xs:extension base="xs:string">
+                    <xs:attribute ref="fhc:group_rsp_data"/>
+                </xs:extension>
+            </xs:simpleContent>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="split_namespace" type="xs:string"/>
+    <xs:element name="split_tag" type="xs:NMTOKEN"/>
+
+    <xs:element name="application" type="xs:NCName"/>
+    <xs:element name="request_filename" type="xs:string"/>
+    <xs:element name="update_attribute" type="xs:string"/>
+    <xs:element name="update_data_attribute" type="xs:string"/>
+    <xs:element name="filter_attribute" type="xs:string"/>
+    <xs:element name="request_endpoint" type="xs:string"/>
     <xs:attribute name="process_name" type="xs:string"/>
+    <xs:attribute name="group_rsp_data" type="fhc:true_false"/>
+    <!-- Attributes for Web Services -->
+    <xs:complexType name="ws_attributes">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element ref="fhc:application"/>
+            <xs:element ref="fhc:request_filename"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:request_type"/>
+            <xs:choice>
+                <xs:element ref="fhc:filter_attributes"/>
+                <xs:element ref="fhc:update_attributes"/>
+            </xs:choice>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:request_endpoint"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:response_endpoint"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:split_namespace"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:split_tag"/>
+        </xs:choice>
+    </xs:complexType>
+    <!-- Simple Types -->
+    <xs:simpleType name="true_false">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="5"/>
+            <xs:enumeration value="true"/>
+            <xs:enumeration value="false"/>
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>
