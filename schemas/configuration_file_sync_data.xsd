@@ -17,7 +17,7 @@
       <xs:sequence>
         <xs:element ref="fhc:web_service_information"/>
       </xs:sequence>
-      <xs:attribute name="process_name" use="required" form="qualified"/>
+      <xs:attribute ref="fhc:process_name" use="required"/>
     </xs:complexType>
   </xs:element>
   <xs:element name="web_service_information">
@@ -107,4 +107,5 @@
   <xs:element name="update_attribute" type="xs:string"/>
   <xs:element name="filter_attribute" type="xs:string"/>
   <xs:element name="request_endpoint" type="xs:string"/>
+    <xs:attribute name="process_name" type="xs:string"/>
 </xs:schema>

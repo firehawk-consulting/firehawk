@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" targetNamespace="https://github.com/firehawk-consulting/firehawk/schemas/transaction_log.xsd"
+    vc:minVersion="1.1"
+    xmlns:tl="https://github.com/firehawk-consulting/firehawk/schemas/transaction_log.xsd"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <xs:element name="processing_records">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="tl:transaction_record"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="transaction_record">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="1" minOccurs="1" ref="tl:file_data"/>
+                <xs:element maxOccurs="1" minOccurs="1" ref="tl:record_stats"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="tl:record_error_info"/>
+            </xs:sequence>
+            <xs:attribute use="required" ref="tl:transaction_record_number"/>
+            <xs:attribute use="required" ref="tl:transaction_grouping"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="file_data">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="1" minOccurs="0" ref="tl:instance_number"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="tl:record_number"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="tl:source_filename"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="record_stats">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="1" minOccurs="1" ref="tl:source_id"/>
+                <xs:element maxOccurs="1" minOccurs="1" ref="tl:workday_id"/>
+                <xs:element maxOccurs="1" minOccurs="1" ref="tl:status"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="tl:additional_information"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="tl:amount"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="record_error_info">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="1" minOccurs="0" ref="tl:reason"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="tl:description"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="source_filename" type="xs:string"/>
+    <xs:element name="instance_number" type="xs:integer"/>
+    <xs:element name="record_number" type="xs:integer"/>
+    <xs:element name="source_id" type="xs:string"/>
+    <xs:element name="workday_id" type="xs:string"/>
+    <xs:element name="status" type="xs:string"/>
+    <xs:element name="additional_information" type="xs:string"/>
+    <xs:element name="amount" type="xs:decimal"/>
+    <xs:element name="reason" type="xs:string"/>
+    <xs:element name="description" type="xs:string"/>
+    <xs:attribute name="transaction_grouping" type="xs:string"/>
+    <xs:attribute name="transaction_record_number" type="xs:integer"/>
+</xs:schema>
