@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+    xmlns:tns="https://github.com/firehawk-consulting/firehawk/schemas/text_to_xml/transform_file_to_xml.xsd"
+    xmlns:ts="http://schemas.capeclear.com/2003/02/TextSchema"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="https://github.com/firehawk-consulting/firehawk/schemas/text_to_xml/transform_file_to_xml.xsd"
+    ts:eofStrip="&amp;#10;"
+    ts:numberFormat="#,###.#"
+    ts:rootElement="tns:File"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1">
+    <xsd:element name="File">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="header_record"
+                    minOccurs="0"
+                    maxOccurs="1"
+                    ts:endTag="\n">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="column_name"
+                                minOccurs="1"
+                                maxOccurs="unbounded"
+                                type="xsd:string"
+                                ts:endTag="\t"
+                                ts:align="left"
+                                ts:format="[^\t]+"
+                                ts:quoted="optional"/>
+                             <xsd:element name="last_column_name"
+                                minOccurs="1"
+                                maxOccurs="1"
+                                type="xsd:string"
+                                ts:format="[^*\n]+"
+                                ts:align="left"
+                                ts:quoted="optional"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+                <xsd:element name="record"
+                    minOccurs="0"
+                    maxOccurs="unbounded"
+                    ts:endTag="\n">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="data_item"
+                                minOccurs="1"
+                                maxOccurs="unbounded"
+                                type="xsd:string"
+                                ts:endTag="\t"
+                                ts:align="left"
+                                ts:format="[^\t]+"
+                                ts:quoted="optional"/>
+                             <xsd:element name="last_data_item"
+                                minOccurs="1"
+                                maxOccurs="1"
+                                type="xsd:string"
+                                ts:format="[^*\n]+"
+                                ts:align="left"
+                                ts:quoted="optional"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+</xsd:schema>

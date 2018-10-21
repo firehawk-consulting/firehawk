@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema elementFormDefault="qualified" 
+    targetNamespace="https://github.com/firehawk-consulting/firehawk/schemas/summary_transaction_log.xsd"
+    vc:minVersion="1.1"
+    xmlns:tl="https://github.com/firehawk-consulting/firehawk/schemas/summary_transaction_log.xsd"
+    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+    <xs:element name="summary_log">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" ref="tl:summary_log_information"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="summary_log_information">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="1" minOccurs="1" ref="tl:log_details"/>
+            </xs:sequence>
+            <xs:attribute use="required" ref="tl:filename"/>
+            <xs:attribute use="required" ref="tl:logging_level"/>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="log_details" type="xs:string"/>
+    <!-- Attributes -->
+    <xs:attribute name="filename" type="xs:string"/>
+    <xs:attribute name="logging_level" type="tl:logging_level"/>
+    <xs:attribute name="transaction_record_number" type="xs:integer"/>
+    <!-- Simple Types -->
+    <xs:simpleType name="transaction_status">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="10"/>
+            <xs:enumeration value="failed"/>
+            <xs:enumeration value="imported"/>
+            <xs:enumeration value="skipped"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="logging_level">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="20"/>
+            <xs:enumeration value="summary"/>
+            <xs:enumeration value="transaction"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

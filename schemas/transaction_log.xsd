@@ -57,11 +57,20 @@
     <xs:element name="record_number" type="xs:integer"/>
     <xs:element name="source_id" type="xs:string"/>
     <xs:element name="workday_id" type="xs:string"/>
-    <xs:element name="status" type="xs:string"/>
+    <xs:element name="status" type="tl:transaction_status"/>
     <xs:element name="additional_information" type="xs:string"/>
     <xs:element name="amount" type="xs:decimal"/>
     <xs:element name="reason" type="xs:string"/>
     <xs:element name="description" type="xs:string"/>
     <xs:attribute name="transaction_grouping" type="xs:string"/>
     <xs:attribute name="transaction_record_number" type="xs:integer"/>
+    <!-- Simple Types -->
+    <xs:simpleType name="transaction_status">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="10"/>
+            <xs:enumeration value="failed"/>
+            <xs:enumeration value="imported"/>
+            <xs:enumeration value="skipped"/>
+        </xs:restriction>
+    </xs:simpleType>
 </xs:schema>
