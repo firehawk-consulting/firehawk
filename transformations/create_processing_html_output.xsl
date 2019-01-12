@@ -83,19 +83,19 @@
                                             <xsl:value-of select="max(current-group()//tl:file_data/tl:instance_number)"/>
                                         </td>
                                         <td>
-                                            <xsl:value-of select="count(current-group()//tl:transaction_record[tl:record_stats/tl:status='imported'])"/>
+                                            <xsl:value-of select="count(//current-group()[tl:record_stats/tl:status='imported'])"/>
                                         </td>
                                         <td>
-                                            <xsl:value-of select="count(current-group()//tl:transaction_record[tl:record_stats/tl:status='skipped'])"/>
+                                            <xsl:value-of select="count(current-group()[tl:record_stats/tl:status='skipped'])"/>
                                         </td>
                                         <td>
-                                            <xsl:value-of select="count(current-group()//tl:transaction_record[tl:record_stats/tl:status='failed'])"/>
+                                            <xsl:value-of select="count(current-group()[tl:record_stats/tl:status='failed'])"/>
                                         </td>
                                         <td>
-                                            <xsl:value-of select="count(current-group()//tl:transaction_record)"/>
+                                            <xsl:value-of select="count(current-group())"/>
                                         </td>
                                         <td>
-                                            <xsl:value-of select="format-number(atc:forceValue(sum(current-group()//tl:transaction_record/atc:forceValue(tl:record_stats//tl:amount))),'#,###.00')"/>
+                                            <xsl:value-of select="format-number(atc:forceValue(sum(current-group()//atc:forceValue(tl:record_stats//tl:amount))),'#,##0.00')"/>
                                         </td>
                                     </tr>
                                 </table>
@@ -158,7 +158,7 @@
                 <xsl:value-of select="normalize-space(tl:record_error_info/tl:description)"/>
             </td>
             <td>
-                <xsl:value-of select="format-number(atc:forceValue(tl:record_stats/tl:amount), '#,###.00')"/>
+                <xsl:value-of select="format-number(atc:forceValue(tl:record_stats/tl:amount), '#,##0.00')"/>
             </td>
             <td>
                 <xsl:value-of select="tl:record_stats/tl:additional_information"/>
