@@ -1,0 +1,395 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+  elementFormDefault="qualified"
+  attributeFormDefault="qualified"
+  targetNamespace="https://github.com/firehawk-consulting/firehawk/schemas/financials/supplierinvoicedatastandard.xsd"
+  xmlns:fhcsi="https://github.com/firehawk-consulting/firehawk/schemas/financials/supplierinvoicedatastandard.xsd"
+  xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" vc:minVersion="1.1">
+  <xs:annotation>
+    <xs:appinfo>Standard Invoice Import Schema</xs:appinfo>
+    <xs:documentation xml:lang="en">
+      Copyright 2014 Matthew Davis
+    </xs:documentation>
+    <xs:documentation xml:lang="en">
+      This program is free software: you can redistribute it and/or modify
+      it under the terms of the GNU General Public License as published by
+      the Free Software Foundation, either version 3 of the License, or
+      (at your option) any later version.
+      
+      This program is distributed in the hope that it will be useful,
+      but WITHOUT ANY WARRANTY; without even the implied warranty of
+      MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+      GNU General Public License for more details.
+      
+      You should have received a copy of the GNU General Public License
+      along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;
+    </xs:documentation>
+  </xs:annotation>
+  <xs:element name="supplier_invoice_file">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="fhcsi:supplier_invoice_data" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="supplier_invoice_data">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="fhcsi:comment" minOccurs="0" maxOccurs="1"/>
+        <xs:group ref="fhcsi:source_identifier" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:supplier_invoice_number" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:invoice_date" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:invoice_due_date" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:invoice_memo" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:credit_reason" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:invoice_subtotal" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:invoice_taxtotal" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:invoice_tax" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:invoice_freighttotal" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:invoice_othertotal" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:invoice_total" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:header_company_id" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:header_currency_id" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:supplier_info" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:external_po_number" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:workday_po_number" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:workday_contract_number" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:image_data" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:invoice_line_data" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:choice>
+        <xs:attribute ref="fhcsi:invoice_type" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:attribute name="invoice_type">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="30"/>
+        <xs:enumeration value="credit_memo"/>
+        <xs:enumeration value="standard"/>
+        <xs:enumeration value="d"/>
+        <xs:enumeration value="c"/>
+        <xs:enumeration value="i"/>
+        <xs:enumeration value="INVOICE"/>
+        <xs:enumeration value="Non PO Invoice"/>
+        <xs:enumeration value="PO Invoice"/>
+        <xs:enumeration value="Credit Memo"/>
+        <xs:enumeration value="Freight Invoice"/>
+        <xs:enumeration value="Legal Invoice"/>
+        <xs:enumeration value="Medical Invoice"/>
+        <xs:enumeration value="Utility"/>
+        <xs:enumeration value="Travel and Expense"/>
+        <xs:enumeration value="Payment Request"/>
+        <xs:enumeration value="Refund Request"/>
+        <xs:enumeration value="Acknowledgement"/>
+        <xs:enumeration value="Change of Address"/>
+        <xs:enumeration value="Correspondence"/>
+        <xs:enumeration value="Cover Page"/>
+        <xs:enumeration value="Late Final Shut Off Notice"/>
+        <xs:enumeration value="Statement"/>
+        <xs:enumeration value="Other"/>
+        <xs:enumeration value="Invalid Invoice"/>
+        <xs:enumeration value="W9"/>
+        <xs:enumeration value="Revolving Account Invoice"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:attribute>
+  <xs:group name="source_identifier">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="fhcsi:invoice_prefix" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:workday_internal_invoice_number" minOccurs="1" maxOccurs="1"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <xs:element name="comment">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="4000"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="invoice_prefix">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="10"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="workday_internal_invoice_number">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:minLength value="1"/>
+        <xs:maxLength value="4000"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="supplier_invoice_number">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="4000"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="invoice_date" type="xs:date"/>
+  <xs:element name="invoice_due_date" type="xs:date"/>
+  <xs:element name="invoice_memo" type="fhcsi:workday_memo"/>
+  <xs:element name="credit_reason">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="100"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="invoice_subtotal" type="fhcsi:workday_amount"/>
+  <xs:element name="invoice_taxtotal" type="fhcsi:tax_amount"/>
+  <xs:element name="invoice_tax">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="fhcsi:invoice_taxdetail" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+    <xs:element name="invoice_taxdetail" type="fhcsi:tax_amount"/>
+  <xs:element name="invoice_freighttotal" type="fhcsi:workday_amount"/>
+  <xs:element name="invoice_othertotal" type="fhcsi:workday_amount"/>
+  <xs:element name="invoice_total" type="fhcsi:workday_amount"/>
+  <xs:element name="header_company_id" type="fhcsi:workday_id"/>
+  <xs:element name="header_currency_id">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:length value="3"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="workday_supplier_id">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:minLength value="6"/>
+        <xs:maxLength value="8"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="supplier_info">
+    <xs:complexType>
+      <xs:choice minOccurs="1" maxOccurs="unbounded">
+        <xs:element ref="fhcsi:workday_supplier_id"/>
+        <xs:element ref="fhcsi:external_supplier_id"/>
+        <xs:element ref="fhcsi:workday_supplier_reference"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="external_supplier_id" type="fhcsi:workday_id"/>
+  <xs:element name="workday_supplier_reference">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="xs:string">
+          <xs:attribute name="po_supplier_reference" use="optional" form="qualified" type="xs:string"/>
+          <xs:attribute name="supplier_cxml_identity" use="optional" form="qualified" type="xs:string"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="external_po_number">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="250"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="workday_po_number">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="fhcsi:workday_po_number">
+          <xs:attribute name="po_found" use="optional" form="qualified" type="xs:boolean"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="workday_contract_number" type="fhcsi:workday_contract_number"/>
+  <xs:element name="image_data">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="fhcsi:image_file" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="invoice_line_data">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="fhcsi:line_order" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:line_memo" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:item_number" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:item_description" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:taxapplicability" minOccurs="0" maxOccurs="1"/>
+        <xs:choice minOccurs="1" maxOccurs="1">
+          <xs:element ref="fhcsi:workday_line_po_number"/>
+          <xs:element ref="fhcsi:workday_line_contract_number"/>
+          <xs:group ref="fhcsi:manualinvoice"/>
+        </xs:choice>
+        <xs:element ref="fhcsi:spend_category_id" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:quantity" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:unit_cost" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:extended_amount" minOccurs="1" maxOccurs="1"/>
+        <xs:element ref="fhcsi:line_tax_amount" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:line_freight_amount" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:line_other_amount" minOccurs="0" maxOccurs="1"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:group name="manualinvoice">
+    <xs:sequence>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element ref="fhcsi:line_company_id" minOccurs="0" maxOccurs="1"/>
+        <xs:element ref="fhcsi:worktags" minOccurs="1" maxOccurs="1"/>
+      </xs:choice>
+    </xs:sequence>
+  </xs:group>
+  <xs:element name="line_company_id" type="fhcsi:workday_id"/>
+  <xs:element name="line_order">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="15"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="line_memo" type="fhcsi:workday_memo"/>
+  <xs:element name="item_number" type="fhcsi:workday_memo"/>
+  <xs:element name="item_description" type="fhcsi:workday_memo"/>
+  <xs:element name="taxapplicability">
+    <xs:simpleType>
+      <xs:restriction base="xs:string">
+        <xs:maxLength value="25"/>
+      </xs:restriction>
+    </xs:simpleType>
+  </xs:element>
+  <xs:element name="workday_line_po_number">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="fhcsi:workday_po_number">
+          <xs:attribute name="line_number" use="required" form="qualified" type="xs:integer"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="workday_line_contract_number">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="fhcsi:workday_contract_number">
+          <xs:attribute name="line_number" use="required" form="qualified" type="xs:integer"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="spend_category_id" type="fhcsi:workday_id"/>
+  <xs:element name="quantity" type="xs:float"/>
+  <xs:element name="unit_cost" type="fhcsi:workday_amount"/>
+  <xs:element name="extended_amount" type="fhcsi:workday_amount"/>
+  <xs:element name="line_tax_amount" type="fhcsi:tax_amount"/>
+  <xs:element name="line_freight_amount" type="fhcsi:workday_amount"/>
+  <xs:element name="line_other_amount" type="fhcsi:workday_amount"/>
+  <xs:element name="worktags">
+    <xs:complexType>
+      <xs:choice>
+        <xs:element ref="fhcsi:worktag" minOccurs="1" maxOccurs="unbounded"/>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="worktag">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="fhcsi:workday_id">
+          <xs:attribute name="type" use="required" form="qualified" type="fhcsi:worktag_type"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <!-- Add Document ID -->
+  <xs:element name="image_file">
+    <xs:complexType>
+      <xs:simpleContent>
+        <xs:extension base="fhcsi:image_filename">
+          <xs:attribute name="file_type" use="required" form="qualified" type="fhcsi:file_type"/>
+          <xs:attribute name="document_id" use="optional" form="qualified" type="fhcsi:workday_contract_number"/>
+        </xs:extension>
+      </xs:simpleContent>
+    </xs:complexType>
+  </xs:element>
+  <!-- Custom Types -->
+  <xs:simpleType name="worktag_type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50"/>
+      <xs:enumeration value="region"/>
+      <xs:enumeration value="costcenter"/>
+      <xs:enumeration value="project"/>
+      <xs:enumeration value="projectplantask"/>
+      <xs:enumeration value="sourceproject"/>
+      <xs:enumeration value="sourceprojectphase"/>
+      <xs:enumeration value="sourceprojecttask"/>
+      <xs:enumeration value="Organization_Reference_ID"/>
+      <xs:enumeration value="Region_Reference_ID"/>
+      <xs:enumeration value="Cost_Center_Reference_ID"/>
+      <xs:enumeration value="Custom_Organization_Reference_ID"/>
+      <xs:enumeration value="Project_Plan_ID"/>
+      <xs:enumeration value="Project_ID"/>
+    </xs:restriction>
+  </xs:simpleType>
+
+  <xs:complexType name="tax_amount">
+    <xs:simpleContent>
+      <xs:extension base="fhcsi:workday_amount">
+        <xs:attribute name="tax_type" use="optional" form="qualified" type="fhcsi:tax_type"/>
+      </xs:extension>
+    </xs:simpleContent>
+  </xs:complexType>
+  <xs:simpleType name="tax_type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="50"/>
+      <xs:enumeration value="VAT"/>
+      <xs:enumeration value="GST"/>
+      <xs:enumeration value="HST"/>
+      <xs:enumeration value="Sales"/>
+      <xs:enumeration value="Use"/>
+      <xs:enumeration value="FET"/>
+      <xs:enumeration value="LOC"/>
+      <xs:enumeration value="PST"/>
+      <xs:enumeration value="QST"/>
+      <xs:enumeration value="STA"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="workday_po_number">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="15"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="workday_contract_number">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="15"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="workday_memo">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="4096"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="workday_amount">
+    <xs:restriction base="xs:decimal">
+      <xs:fractionDigits value="2"/>
+      <xs:totalDigits value="26"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="workday_id">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="100"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="image_filename">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="100"/>
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="file_type">
+    <xs:restriction base="xs:string">
+      <xs:maxLength value="25"/>
+    </xs:restriction>
+  </xs:simpleType>
+</xs:schema>
