@@ -96,6 +96,7 @@
     <xs:element name="response" type="fhc:process_properties"/>
     <xs:element name="filename" type="xs:string"/>
     <xs:element name="sequencer" type="xs:string"/>
+    <xs:element name="delimiter" type="xs:string"/>
     <xs:element name="update_attribute" type="xs:string"/>
     <xs:element name="update_data_attribute" type="xs:string"/>
     <xs:element name="filter_attribute" type="xs:string"/>
@@ -136,6 +137,7 @@
             <xs:element maxOccurs="1" minOccurs="0" ref="fhc:filename"/>
             <xs:element maxOccurs="1" minOccurs="0" ref="fhc:sub_type"/>
             <xs:element maxOccurs="1" minOccurs="0" ref="fhc:endpoint"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:delimiter"/>
             <xs:element maxOccurs="unbounded" minOccurs="0" ref="fhc:sub_process"/>
         </xs:choice>
         <xs:attribute ref="fhc:subprocess_name"/>
@@ -187,6 +189,7 @@
             <xs:enumeration value="start_put"/>
             <xs:enumeration value="put_request"/>
             <xs:enumeration value="conform_xml"/>
+            <xs:enumeration value="create_ws_xml"/>
             <xs:enumeration value="lookup_wd_data"/>
             <xs:enumeration value="group_rsp_data"/>
         </xs:restriction>
