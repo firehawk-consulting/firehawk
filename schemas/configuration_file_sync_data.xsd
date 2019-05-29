@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xs:schema elementFormDefault="qualified" 
-    targetNamespace="https://github.com/firehawk-consulting/firehawk/schemas/configuration_file_sync_data.xsd"
-    vc:minVersion="1.1"
-    xmlns:fhc="https://github.com/firehawk-consulting/firehawk/schemas/configuration_file_sync_data.xsd"
-    xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning"
-    xmlns:xs="http://www.w3.org/2001/XMLSchema"
-    xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xs:schema elementFormDefault="qualified" targetNamespace="https://github.com/firehawk-consulting/firehawk/schemas/configuration_file_sync_data.xsd" vc:minVersion="1.1" xmlns:fhc="https://github.com/firehawk-consulting/firehawk/schemas/configuration_file_sync_data.xsd" xmlns:vc="http://www.w3.org/2007/XMLSchema-versioning" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
     <xs:element name="processes">
         <xs:complexType>
@@ -18,6 +12,7 @@
         <xs:complexType>
             <xs:sequence>
                 <xs:element ref="fhc:web_service_information"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="fhc:output_information"/>
             </xs:sequence>
             <xs:attribute ref="fhc:process_name" use="required"/>
         </xs:complexType>
@@ -30,14 +25,20 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="get_ws_attributes" type="fhc:ws_attributes"/>
-    <xs:element name="put_ws_attributes" type="fhc:ws_attributes"/>
-    <xs:element name="request_type" type="xs:NCName"/>
     <xs:element name="filter_attributes">
         <xs:complexType>
-            <xs:sequence>
+            <xs:choice maxOccurs="unbounded">
                 <xs:element ref="fhc:multi_instance_filters"/>
                 <xs:element ref="fhc:single_instance_filters"/>
+                <xs:element ref="fhc:file_label"/>
+                <xs:element ref="fhc:report_filters"/>
+            </xs:choice>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="report_filters">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element maxOccurs="unbounded" minOccurs="0" ref="fhc:report_filter"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -78,41 +79,99 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
-    <xs:element name="response_endpoint">
-        <xs:complexType>
-            <xs:simpleContent>
-                <xs:extension base="xs:string">
-                    <xs:attribute ref="fhc:group_rsp_data"/>
-                </xs:extension>
-            </xs:simpleContent>
-        </xs:complexType>
-    </xs:element>
-    <xs:element name="split_namespace" type="xs:string"/>
-    <xs:element name="split_tag" type="xs:NMTOKEN"/>
-
-    <xs:element name="application" type="xs:NCName"/>
-    <xs:element name="request_filename" type="xs:string"/>
+    <!-- Simple Elements -->
+    <xs:element name="get_ws_attributes" type="fhc:ws_attributes"/>
+    <xs:element name="put_ws_attributes" type="fhc:ws_attributes"/>
+    <xs:element name="output_information" type="fhc:output_information"/>
+    <xs:element name="sub_type" type="xs:NCName"/>
+    <xs:element name="workday_transaction_id_data" type="fhc:namespace_data"/>
+    <xs:element name="split_data" type="fhc:namespace_data"/>
+    <xs:element name="namespace" type="xs:string"/>
+    <xs:element name="tag" type="xs:string"/>
+    <xs:element name="application" type="xs:string"/>
+    <xs:element name="request" type="fhc:process_properties"/>
+    <xs:element name="sub_process" type="fhc:process_properties"/>
+    <xs:element name="convert_to_xml" type="fhc:process_properties"/>
+    <xs:element name="conform_request" type="fhc:process_properties"/>
+    <xs:element name="response" type="fhc:process_properties"/>
+    <xs:element name="filename" type="xs:string"/>
+    <xs:element name="sequencer" type="xs:string"/>
+    <xs:element name="delimiter" type="xs:string"/>
     <xs:element name="update_attribute" type="xs:string"/>
     <xs:element name="update_data_attribute" type="xs:string"/>
     <xs:element name="filter_attribute" type="xs:string"/>
-    <xs:element name="request_endpoint" type="xs:string"/>
+    <xs:element name="file_label" type="xs:string"/>
+    <xs:element name="report_filter" type="fhc:report_filter_data"/> 
+    <xs:element name="output_file" type="fhc:output_file"/> 
+    <xs:element name="report_alias" type="xs:string"/>
+    <xs:element name="endpoint" type="xs:string"/>
+    <xs:element name="deliver_documents_attribute" type="xs:string"/>
+    <!-- Attributes -->
     <xs:attribute name="process_name" type="xs:string"/>
+    <xs:attribute name="subprocess_name" type="fhc:subprocess"/>
+    <xs:attribute name="namespace" type="xs:string"/>
     <xs:attribute name="group_rsp_data" type="fhc:true_false"/>
+    <xs:attribute name="execute_subprocess" type="fhc:true_false"/>
+    <xs:attribute name="filtername" type="xs:string"/>
+    <xs:attribute name="delivery_service" type="xs:string"/>
+    <xs:attribute name="aggregation_data_type" type="fhc:aggregation_type"/>
+
     <!-- Attributes for Web Services -->
     <xs:complexType name="ws_attributes">
         <xs:choice maxOccurs="unbounded">
             <xs:element ref="fhc:application"/>
-            <xs:element ref="fhc:request_filename"/>
-            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:request_type"/>
+            <xs:element ref="fhc:sub_process"/>
             <xs:choice>
                 <xs:element ref="fhc:filter_attributes"/>
                 <xs:element ref="fhc:update_attributes"/>
             </xs:choice>
-            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:request_endpoint"/>
-            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:response_endpoint"/>
-            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:split_namespace"/>
-            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:split_tag"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:split_data"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:workday_transaction_id_data"/>
         </xs:choice>
+    </xs:complexType>
+    <!-- Attributes for Sub Processes -->
+    <xs:complexType name="process_properties">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:application"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:report_alias"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:filename"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:sub_type"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:endpoint"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:delimiter"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="fhc:sub_process"/>
+        </xs:choice>
+        <xs:attribute ref="fhc:subprocess_name"/>
+        <xs:attribute ref="fhc:execute_subprocess"/>
+    </xs:complexType>
+    <!-- Attributes for Output Information -->
+    <xs:complexType name="output_information">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:filename"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:output_file"/>
+        </xs:choice>
+        <xs:attribute ref="fhc:aggregation_data_type"/>
+    </xs:complexType>
+    <xs:complexType name="output_file">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:sequencer"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:deliver_documents_attribute"/>
+        </xs:choice>
+        <xs:attribute ref="fhc:delivery_service"/>
+    </xs:complexType>
+    <!-- Attributes for Namespaces -->
+    <xs:complexType name="namespace_data">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:tag"/>
+        </xs:choice>
+        <xs:attribute ref="fhc:namespace"/>
+    </xs:complexType>
+    <!-- Attributes for Report Filters -->
+    <xs:complexType name="report_filter_data">
+        <xs:simpleContent>
+            <xs:extension base="xs:string">
+                <xs:attribute ref="fhc:filtername"/>
+            </xs:extension>
+        </xs:simpleContent>
     </xs:complexType>
     <!-- Simple Types -->
     <xs:simpleType name="true_false">
@@ -120,6 +179,26 @@
             <xs:maxLength value="5"/>
             <xs:enumeration value="true"/>
             <xs:enumeration value="false"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="subprocess">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="25"/>
+            <xs:enumeration value="get_request"/>
+            <xs:enumeration value="convert_to_xml"/>
+            <xs:enumeration value="start_put"/>
+            <xs:enumeration value="put_request"/>
+            <xs:enumeration value="conform_xml"/>
+            <xs:enumeration value="create_ws_xml"/>
+            <xs:enumeration value="lookup_wd_data"/>
+            <xs:enumeration value="group_rsp_data"/>
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="aggregation_type">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="10"/>
+            <xs:enumeration value="text"/>
+            <xs:enumeration value="xml"/>
         </xs:restriction>
     </xs:simpleType>
 </xs:schema>

@@ -35,7 +35,6 @@
   <xs:element name="supplier_invoice_data">
     <xs:complexType>
       <xs:choice maxOccurs="unbounded">
-        <xs:element ref="fhcsi:invoice_type" minOccurs="1" maxOccurs="1"/>
         <xs:element ref="fhcsi:comment" minOccurs="0" maxOccurs="1"/>
         <xs:group ref="fhcsi:source_identifier" minOccurs="0" maxOccurs="1"/>
         <xs:element ref="fhcsi:supplier_invoice_number" minOccurs="1" maxOccurs="1"/>
@@ -58,9 +57,10 @@
         <xs:element ref="fhcsi:image_data" minOccurs="0" maxOccurs="1"/>
         <xs:element ref="fhcsi:invoice_line_data" minOccurs="1" maxOccurs="unbounded"/>
       </xs:choice>
+        <xs:attribute ref="fhcsi:invoice_type" use="required"/>
     </xs:complexType>
   </xs:element>
-  <xs:element name="invoice_type">
+  <xs:attribute name="invoice_type">
     <xs:simpleType>
       <xs:restriction base="xs:string">
         <xs:maxLength value="30"/>
@@ -92,7 +92,7 @@
         <xs:enumeration value="Revolving Account Invoice"/>
       </xs:restriction>
     </xs:simpleType>
-  </xs:element>
+  </xs:attribute>
   <xs:group name="source_identifier">
     <xs:sequence>
       <xs:choice maxOccurs="unbounded">
@@ -393,3 +393,5 @@
     </xs:restriction>
   </xs:simpleType>
 </xs:schema>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
