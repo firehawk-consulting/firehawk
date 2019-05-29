@@ -84,7 +84,7 @@
         </xsl:for-each>
     </xsl:template>
     
-    <xsl:function name="fhcf:ApplyReverseMap">
+    <xsl:function name="fhcf:get-reverseMap">
         <xsl:param name="mapName"/>
         <xsl:param name="externalValue"/>
         <xsl:param name="overrideExternalValue"/>

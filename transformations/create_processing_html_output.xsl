@@ -3,7 +3,7 @@
     xmlns:fhc="https://github.com/firehawk-consulting/firehawk"
     xmlns:xs="http://www.w3.org/2001/XMLSchema"
     xmlns:tl="https://github.com/firehawk-consulting/firehawk/schemas/transaction_log.xsd"
-    exclude-result-prefixes="xsl atc xs tl">
+    exclude-result-prefixes="xsl fhc xs tl">
     <!--xsl:output method="text"/-->
     <xsl:variable name="linefeed"><xsl:text>&#xA;</xsl:text></xsl:variable>
     <xsl:variable name="carriagereturn"><xsl:text>&#13;</xsl:text></xsl:variable>
@@ -11,7 +11,7 @@
     <xsl:variable name="delimiter"><xsl:text>&#x09;</xsl:text></xsl:variable>
     <xsl:param name="summarylog.filename"/>
     <xsl:param name="summarylog.file.extension"/>
-
+    
     <xsl:function name="fhc:forceValue" as="xs:decimal">
         <xsl:param name="inputdata"/>
         <xsl:choose>
@@ -23,7 +23,7 @@
             </xsl:otherwise>
         </xsl:choose>
     </xsl:function>
-
+    
     <xsl:template match="/">
         <tl:summary_log>
             <xsl:for-each-group select="//tl:transaction_record" group-by="@tl:transaction_grouping">
@@ -99,20 +99,25 @@
                                 </table>
                                 <br/>
                                 <br/>
-                                <xsl:for-each-group select="current-group()" group-by="tl:record_stats/tl:status">
-                                    <xsl:sort select="tl:record_stats/tl:status"/>
-                                    <table style="width:100%">
-                                        <caption>
-                                            <xsl:value-of select="upper-case(current-grouping-key())"/>
-                                            <xsl:value-of select="upper-case(' Records')"/>
-                                        </caption>
-                                        <xsl:call-template name="header-record"/>
-                                        <xsl:apply-templates select="current-group()"/>
-                                    </table>
-                                    <xsl:if test="position() != last()">
-                                        <br/>
-                                        <br/>
-                                    </xsl:if>
+                                <xsl:for-each-group select="current-group()" group-by="tl:record_stats/tl:web_service_call_name">
+                                    <xsl:variable name="ws.call.name" select="current-grouping-key()"/>
+                                    <xsl:for-each-group select="current-group()" group-by="tl:record_stats/tl:status">
+                                        <xsl:sort select="tl:record_stats/tl:status"/>
+                                        <table style="width:100%">
+                                            <caption>
+                                                <xsl:value-of select="$ws.call.name"/>
+                                                <xsl:value-of select="' '"/>
+                                                <xsl:value-of select="upper-case(current-grouping-key())"/>
+                                                <xsl:value-of select="upper-case(' Records')"/>
+                                            </caption>
+                                            <xsl:call-template name="header-record"/>
+                                            <xsl:apply-templates select="current-group()"/>
+                                        </table>
+                                        <xsl:if test="position() != last()">
+                                            <br/>
+                                            <br/>
+                                        </xsl:if>
+                                    </xsl:for-each-group>
                                 </xsl:for-each-group>
                             </body>
                         </html>
@@ -121,9 +126,12 @@
             </xsl:for-each-group>
         </tl:summary_log>
     </xsl:template>
-
+    
     <xsl:template match="tl:transaction_record">
         <tr>
+            <td>
+                <xsl:value-of select="tl:record_stats/tl:web_service_call_name"/>
+            </td>
             <td>
                 <xsl:value-of select="@tl:transaction_record_number"/>
             </td>
@@ -143,8 +151,8 @@
                 <!-- <xsl:choose>
                     <xsl:when test="tl:record_stats/tl:status = 'failed'"/>
                     <xsl:otherwise> -->
-                        <xsl:value-of select="tl:record_stats/tl:workday_id"/>
-                    <!-- </xsl:otherwise>
+                <xsl:value-of select="tl:record_stats/tl:workday_id"/>
+                <!-- </xsl:otherwise>
                 </xsl:choose> -->
             </td>
             <td>
@@ -164,9 +172,10 @@
             </td>
         </tr>
     </xsl:template>
-
+    
     <xsl:template name="header-record">
         <tr>
+            <th>Web Service Call Name</th>
             <th>Process Record Number</th>
             <th>File Number</th>
             <th>Source File Name</th>

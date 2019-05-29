@@ -14,7 +14,6 @@
     </xsl:variable>
 
     <xsl:template match="/">
-        <!--<xsl:copy-of select="$column_headers"/>-->
         <fhcpd:external_file>
             <xsl:apply-templates select="//tfxc:record[position() != 1]" mode="details"/>
         </fhcpd:external_file>
@@ -35,12 +34,6 @@
         </xsl:for-each>
     </xsl:template>
 
-    <xsl:template match="@* | node()">
-        <xsl:copy>
-            <xsl:apply-templates select="@* | node()"/>
-        </xsl:copy>
-    </xsl:template>
-
     <xsl:template match="@* | node()" mode="output">
         <xsl:variable name="temp_name" select="name()"/>
         <xsl:variable name="temp_element" select="fhcpd:get-column-name($temp_name)"/>
@@ -48,19 +41,6 @@
             <xsl:value-of select="replace(., '&quot;', '')"/>
         </xsl:element>
     </xsl:template>
-
-    <xsl:function name="fhcpd:get-column-position" as="xs:integer">
-        <xsl:param name="column_name_lkp"/>
-        <xsl:variable name="column_exists" select="count($column_headers//node()[. = $column_name_lkp])"/>
-        <xsl:choose>
-            <xsl:when test="$column_exists = 0">
-                <xsl:value-of select="0"/>
-            </xsl:when>
-            <xsl:otherwise>
-                <xsl:value-of select="count($column_headers//node()[. = $column_name_lkp]/preceding-sibling::node()) + 1"/>
-            </xsl:otherwise>
-        </xsl:choose>
-    </xsl:function>
 
     <xsl:function name="fhcpd:get-column-name" as="xs:string">
         <xsl:param name="column_name_lkp"/>
