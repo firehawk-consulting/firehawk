@@ -877,6 +877,7 @@
             <xsl:value-of select="format-number($effective_extended_amount,'####.00')"/>
         </bsvc:Extended_Amount>
     </xsl:template>
+
     <xsl:template name="othertotallinebreakout">
         <xsl:param name="othertotal"/>
         <xsl:param name="subtotal"/>

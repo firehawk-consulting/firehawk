@@ -47,8 +47,9 @@
     <xs:element name="record_error_info">
         <xs:complexType>
             <xs:sequence>
-                <xs:element maxOccurs="1" minOccurs="0" ref="tl:reason"/>
-                <xs:element maxOccurs="1" minOccurs="0" ref="tl:description"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="tl:record_error_reason"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="tl:record_error_code_message"/>
+                <xs:element maxOccurs="1" minOccurs="0" ref="tl:record_error_description"/>
             </xs:sequence>
         </xs:complexType>
     </xs:element>
@@ -57,11 +58,14 @@
     <xs:element name="record_number" type="xs:integer"/>
     <xs:element name="source_id" type="xs:string"/>
     <xs:element name="workday_id" type="xs:string"/>
+    <xs:element name="application_client_name" type="xs:string"/>
+    <xs:element name="web_service_call_name" type="xs:string"/>
     <xs:element name="status" type="tl:transaction_status"/>
     <xs:element name="additional_information" type="xs:string"/>
     <xs:element name="amount" type="xs:decimal"/>
-    <xs:element name="reason" type="xs:string"/>
-    <xs:element name="description" type="xs:string"/>
+    <xs:element name="record_error_reason" type="xs:string"/>
+    <xs:element name="record_error_code_message" type="xs:string"/>
+    <xs:element name="record_error_description" type="xs:string"/>
     <xs:attribute name="transaction_grouping" type="xs:string"/>
     <xs:attribute name="transaction_record_number" type="xs:integer"/>
     <!-- Simple Types -->

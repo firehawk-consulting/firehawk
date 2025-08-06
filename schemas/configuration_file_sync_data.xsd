@@ -79,9 +79,11 @@
             </xs:sequence>
         </xs:complexType>
     </xs:element>
+
     <!-- Simple Elements -->
     <xs:element name="get_ws_attributes" type="fhc:ws_attributes"/>
     <xs:element name="put_ws_attributes" type="fhc:ws_attributes"/>
+    <xs:element name="external_api_attributes" type="fhc:api_attributes"/>
     <xs:element name="output_information" type="fhc:output_information"/>
     <xs:element name="sub_type" type="xs:NCName"/>
     <xs:element name="workday_transaction_id_data" type="fhc:namespace_data"/>
@@ -101,15 +103,25 @@
     <xs:element name="update_data_attribute" type="xs:string"/>
     <xs:element name="filter_attribute" type="xs:string"/>
     <xs:element name="file_label" type="xs:string"/>
-    <xs:element name="report_filter" type="fhc:report_filter_data"/> 
-    <xs:element name="output_file" type="fhc:output_file"/> 
+    <xs:element name="report_filter" type="fhc:report_filter_data"/>
+    <xs:element name="output_file" type="fhc:output_file"/>
     <xs:element name="report_alias" type="xs:string"/>
     <xs:element name="endpoint" type="xs:string"/>
     <xs:element name="deliver_documents_attribute" type="xs:string"/>
+    <xs:element name="external_http" type="fhc:http_properties"/>
+    <xs:element name="url_attribute" type="xs:string"/>
+    <xs:element name="http_authentication" type="fhc:authentication"/>
+    <xs:element name="rest_method" type="xs:string"/>
+    <xs:element name="user_agent" type="xs:string"/>
+    <xs:element name="content_type" type="xs:string"/>
+    <xs:element name="refresh_token" type="xs:string"/>
+    <xs:element name="api_version_attribute" type="xs:string"/>
+
     <!-- Attributes -->
     <xs:attribute name="process_name" type="xs:string"/>
     <xs:attribute name="subprocess_name" type="fhc:subprocess"/>
     <xs:attribute name="namespace" type="xs:string"/>
+    <xs:attribute name="property_type" type="xs:string"/>
     <xs:attribute name="group_rsp_data" type="fhc:true_false"/>
     <xs:attribute name="execute_subprocess" type="fhc:true_false"/>
     <xs:attribute name="filtername" type="xs:string"/>
@@ -120,16 +132,31 @@
     <xs:complexType name="ws_attributes">
         <xs:choice maxOccurs="unbounded">
             <xs:element ref="fhc:application"/>
-            <xs:element ref="fhc:sub_process"/>
             <xs:choice>
                 <xs:element ref="fhc:filter_attributes"/>
                 <xs:element ref="fhc:update_attributes"/>
             </xs:choice>
             <xs:element maxOccurs="1" minOccurs="0" ref="fhc:split_data"/>
             <xs:element maxOccurs="1" minOccurs="0" ref="fhc:workday_transaction_id_data"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="fhc:sub_process"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:external_api_attributes"/>
+        </xs:choice>
+    </xs:complexType>
+    <!-- Attributes for API Attributes -->
+    <xs:complexType name="api_attributes">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element ref="fhc:external_http"/>
+            <xs:element maxOccurs="unbounded" minOccurs="0" ref="fhc:sub_process"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:api_version_attribute"/>
         </xs:choice>
     </xs:complexType>
     <!-- Attributes for Sub Processes -->
+    <xs:complexType name="authentication">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element ref="fhc:refresh_token"/>
+        </xs:choice>
+        <xs:attribute ref="fhc:property_type"/>
+    </xs:complexType>
     <xs:complexType name="process_properties">
         <xs:choice maxOccurs="unbounded">
             <xs:element maxOccurs="1" minOccurs="0" ref="fhc:application"/>
@@ -142,6 +169,15 @@
         </xs:choice>
         <xs:attribute ref="fhc:subprocess_name"/>
         <xs:attribute ref="fhc:execute_subprocess"/>
+    </xs:complexType>
+    <xs:complexType name="http_properties">
+        <xs:choice maxOccurs="unbounded">
+            <xs:element maxOccurs="1" minOccurs="1" ref="fhc:url_attribute"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:rest_method"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:user_agent"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:content_type"/>
+            <xs:element maxOccurs="1" minOccurs="0" ref="fhc:http_authentication"/>
+        </xs:choice>
     </xs:complexType>
     <!-- Attributes for Output Information -->
     <xs:complexType name="output_information">
@@ -192,6 +228,9 @@
             <xs:enumeration value="create_ws_xml"/>
             <xs:enumeration value="lookup_wd_data"/>
             <xs:enumeration value="group_rsp_data"/>
+            <xs:enumeration value="set_headers"/>
+            <xs:enumeration value="set_authentication"/>
+            <xs:enumeration value="set_endpoint_url"/>
         </xs:restriction>
     </xs:simpleType>
     <xs:simpleType name="aggregation_type">
